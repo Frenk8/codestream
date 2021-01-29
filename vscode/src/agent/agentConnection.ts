@@ -260,7 +260,7 @@ export class CodeStreamAgentConnection implements Disposable {
 				module: context.asAbsolutePath("../shared/agent/dist/agent.js"),
 				transport: TransportKind.ipc,
 				options: {
-					execArgv: ["--nolazy", breakOnStart ? "--inspect-brk=6009" : "--inspect=6009"]
+					execArgv: ["--nolazy", breakOnStart ? "--inspect-brk=6019" : "--inspect=6019"]
 				}
 			}
 		};
@@ -1054,12 +1054,12 @@ export class CodeStreamAgentConnection implements Disposable {
 		this._clientReadyCancellation = new CancellationTokenSource();
 
 		this._clientOptions.outputChannel = this._outputChannel = window.createOutputChannel(
-			"CodeStream (Agent)"
+			"GitHub Enterprise (Agent)"
 		);
 		this._clientOptions.revealOutputChannelOn = RevealOutputChannelOn.Never;
 		this._client = new LanguageClient(
-			"codestream",
-			"CodeStream",
+			"github-enterprise",
+			"GitHub Enterprise",
 			{ ...this._serverOptions } as ServerOptions,
 			{ ...this._clientOptions, initializationOptions: this.getInitializationOptions() }
 		);

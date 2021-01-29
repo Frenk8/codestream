@@ -1,8 +1,8 @@
 [![Devie Award](https://raw.githubusercontent.com/TeamCodeStream/codestream-guide/develop/docs/src/assets/images/devie_banner.png)](https://www.codestream.com/blog/winner-of-the-2021-devie-for-best-coding-tool-codestream)
 
-# CodeStream
+# GitHub Enterprise by CodeStream
 
-CodeStream is a developer collaboration platform that integrates essential dev tools into VS Code. Eliminate context-switching and simplify code discussion and code review by putting collaboration tools in your IDE.
+CodeStream is a developer collaboration platform that integrates essential dev tools, such as GitHub Enterprise, Slack, Teams, Jira, Trello and more, into VS Code. Eliminate context-switching and simplify code discussion and code review by putting collaboration tools in your IDE.
 
 ### Integrations
 
@@ -49,6 +49,10 @@ Previously discussed questions and issues that explain important decisions are n
 
 # Frequently Asked Questions
 
+#### Does CodeStream have an on-prem solution?
+
+Yes! If it's important for your company to keep everything on your own local network, read our [CodeStream On-Prem documentation](https://docs.codestream.com/onprem/) to learn more about the offering. You can be up and running in just minutes!
+
 #### Where are messages stored?
 
 Your team’s codemarks, which include the message text and the code snippet, are stored in the cloud on CodeStream’s servers. CodeStream uses best practices when it comes to [security](https://www.codestream.com/security), but if your team has stringent infosec requirements an [on-prem installation option](https://docs.codestream.com/onprem/) is available.
@@ -59,5 +63,5 @@ Check out the [user guide](https://docs.codestream.com/userguide/) for more info
 
 <p align="center">
   <br />
-  <a title="Learn more about CodeStream" href="https://codestream.com?utm_source=vscmarket&utm_medium=banner&utm_campaign=codestream"><img src="https://alt-images.codestream.com/codestream_logo_vscmarketplace.png" alt="CodeStream Logo" /></a>
+  <a title="Learn more about CodeStream" href="https://codestream.com?utm_source=vscmarket&utm_medium=banner&utm_campaign=codestream"><img src="https://alt-images.codestream.com/codestream_logo_vscmarketplace_ghe.png" alt="CodeStream Logo" /></a>
 </p>

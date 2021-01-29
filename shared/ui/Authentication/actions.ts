@@ -236,7 +236,8 @@ export const completeSignup = (
 		: "CodeStream";
 	HostApi.instance.track("Signup Completed", {
 		"Signup Type": extra.createdTeam ? "Organic" : "Viral",
-		"Auth Provider": providerName
+		"Auth Provider": providerName,
+		Brand: "GitHub Enterprise"
 	});
 	dispatch(onLogin(response, true));
 };
@@ -293,7 +294,8 @@ export const validateSignup = (provider: string, authInfo?: SSOAuthInfo) => asyn
 			: "CodeStream";
 		HostApi.instance.track("Signup Completed", {
 			"Signup Type": authInfo.type === SignupType.CreateTeam ? "Organic" : "Viral",
-			"Auth Provider": providerName
+			"Auth Provider": providerName,
+			Brand: "GitHub Enterprise"
 		});
 
 		return await dispatch(onLogin(response, true));

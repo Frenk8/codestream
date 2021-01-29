@@ -43,7 +43,7 @@ let ipcSequence = 0;
 
 export class CodeStreamWebviewSidebar implements WebviewLike, Disposable, WebviewViewProvider {
 	type = "sidebar";
-	public static readonly viewType = "activitybar.codestream";
+	public static readonly viewType = "activitybar.github-enterprise";
 	static readonly IpcQueueThreshold = 100;
 
 	private _onDidClose = new EventEmitter<void>();
@@ -252,7 +252,7 @@ export class CodeStreamWebviewSidebar implements WebviewLike, Disposable, Webvie
 	async show(streamThread?: StreamThread) {
 		const cc = Logger.getCorrelationContext();
 		if (!this._ipcReady || !this.visible || streamThread === undefined) {
-			commands.executeCommand("workbench.view.extension.codestream-activitybar");
+			commands.executeCommand("workbench.view.extension.github-enterprise-activitybar");
 
 			if (!this._ipcReady) {
 				Logger.log(cc, "waiting for WebView ready");

@@ -1,6 +1,6 @@
 {
-	"name": "codestream",
-	"displayName": "CodeStream: GitHub, GitLab, Bitbucket PRs and Code Review",
+	"name": "github-enterprise",
+	"displayName": "GitHub Enterprise",
 	"description": "GitHub pull requests, GitLab merge requests, and code reviews in your IDE. Eliminate context-switching between tools. Also integrates with Bitbucket, Slack, Teams, Jira, Trello and more.",
 	"version": "11.0.3",
 	"author": "CodeStream",
@@ -18,7 +18,7 @@
 		"vscode": "^1.50.0"
 	},
 	"main": "./dist/extension",
-	"icon": "assets/images/codestream.png",
+	"icon": "assets/images/ghe.png",
 	"preview": false,
 	"categories": [
 		"Other"
@@ -38,25 +38,25 @@
 		"viewsContainers": {
 			"activitybar": [
 				{
-					"id": "codestream-activitybar",
-					"title": "CodeStream",
+					"id": "github-enterprise-activitybar",
+					"title": "GitHub Enterprise",
 					"icon": "assets/images/codestream.svg"
 				}
 			]
 		},
 		"views": {
-			"codestream-activitybar": [
+			"github-enterprise-activitybar": [
 				{
-					"id": "activitybar.codestream",
+					"id": "activitybar.github-enterprise",
 					"type": "webview",
-					"name": "CodeStream",
+					"name": "GitHub Enterprise",
 					"icon": "assets/images/codestream.svg",
-					"contextualTitle": "CodeStream"
+					"contextualTitle": "GitHub Enterprise"
 				}
 			],
 			"scm": [
 				{
-					"id": "scmTreeDataProvider",
+					"id": "github-enterprise.scmTreeDataProvider",
 					"name": "CodeStream"
 				}
 			]
@@ -64,12 +64,12 @@
 		"viewsWelcome": [
 			{
 				"view": "scmTreeDataProvider",
-				"contents": "[Toggle CodeStream](command:codestream.toggle)",
+				"contents": "[Toggle CodeStream](command:github-enterprise.toggle)",
 				"when": "codestream:status == signedOut"
 			},
 			{
 				"view": "scmTreeDataProvider",
-				"contents": "[Request Feedback](command:codestream.newReview)",
+				"contents": "[Request Feedback](command:github-enterprise.newReview)",
 				"when": "codestream:status == signedIn"
 			},
 			{
@@ -82,31 +82,31 @@
 			"type": "object",
 			"title": "CodeStream",
 			"properties": {
-				"codestream.autoHideMarkers": {
+				"github-enterprise.autoHideMarkers": {
 					"type": "boolean",
 					"default": false,
 					"description": "Specifies whether to automatically hide editor marker glyphs when the CodeStream panel is showing codemarks in the current file",
 					"scope": "window"
 				},
-				"codestream.autoSignIn": {
+				"github-enterprise.autoSignIn": {
 					"type": "boolean",
 					"default": true,
 					"description": "Specifies whether to automatically sign in to CodeStream",
 					"scope": "window"
 				},
-				"codestream.disableStrictSSL": {
+				"github-enterprise.disableStrictSSL": {
 					"type": "boolean",
 					"default": false,
 					"description": "Allow self-signed certificates to be used in network requests",
 					"scope": "window"
 				},
-				"codestream.email": {
+				"github-enterprise.email": {
 					"type": "string",
 					"default": null,
 					"description": "Specifies the email address to use to connect to the CodeStream service",
 					"scope": "window"
 				},
-				"codestream.proxySupport": {
+				"github-enterprise.proxySupport": {
 					"type": "string",
 					"default": "on",
 					"enum": [
@@ -116,19 +116,19 @@
 					"description": "Specifies whether to support proxy servers",
 					"scope": "window"
 				},
-				"codestream.serverUrl": {
+				"github-enterprise.serverUrl": {
 					"type": "string",
 					"default": "https://api.codestream.com",
 					"description": "Specifies the url to use to connect to the CodeStream service",
 					"scope": "window"
 				},
-				"codestream.showAvatars": {
+				"github-enterprise.showAvatars": {
 					"type": "boolean",
 					"default": true,
 					"description": "Specifies whether to show avatars",
 					"scope": "window"
 				},
-				"codestream.showInStatusBar": {
+				"github-enterprise.showInStatusBar": {
 					"type": "string",
 					"enum": [
 						"left",
@@ -144,31 +144,31 @@
 					"description": "Specifies whether to show CodeStream in the status bar",
 					"scope": "window"
 				},
-				"codestream.showMarkerCodeLens": {
+				"github-enterprise.showMarkerCodeLens": {
 					"type": "boolean",
 					"default": false,
 					"description": "Specifies whether to show code lens above lines with associated codemarks in the editor",
 					"scope": "window"
 				},
-				"codestream.showMarkerGlyphs": {
+				"github-enterprise.showMarkerGlyphs": {
 					"type": "boolean",
 					"default": true,
 					"description": "Specifies whether to show glyph indicators at the start of lines with associated codemarks in the editor",
 					"scope": "window"
 				},
-				"codestream.showShortcutTipOnSelection": {
+				"github-enterprise.showShortcutTipOnSelection": {
 					"type": "boolean",
 					"default": false,
 					"description": "Specifies whether to show a shortcut key tip attached to the selection when you select code",
 					"scope": "window"
 				},
-				"codestream.team": {
+				"github-enterprise.team": {
 					"type": "string",
 					"default": null,
 					"description": "Specifies an optional team to use to connect to the CodeStream service",
 					"scope": "window"
 				},
-				"codestream.traceLevel": {
+				"github-enterprise.traceLevel": {
 					"type": "string",
 					"default": "verbose",
 					"enum": [
@@ -184,77 +184,77 @@
 		},
 		"commands": [
 			{
-				"command": "codestream.showReviewDiff",
+				"command": "github-enterprise.showReviewDiff",
 				"title": "Show Review Diff",
 				"category": "CodeStream"
 			},
 			{
-				"command": "codestream.showNextChangedFile",
+				"command": "github-enterprise.showNextChangedFile",
 				"title": "Show Next Changed File",
 				"category": "CodeStream"
 			},
 			{
-				"command": "codestream.showPreviousChangedFile",
+				"command": "github-enterprise.showPreviousChangedFile",
 				"title": "Show Previous Changed File",
 				"category": "CodeStream"
 			},
 			{
-				"command": "codestream.closeReviewDiff",
+				"command": "github-enterprise.closeReviewDiff",
 				"title": "Close Review Diff",
 				"category": "CodeStream"
 			},
 			{
-				"command": "codestream.goOffline",
+				"command": "github-enterprise.goOffline",
 				"title": "Go Offline",
 				"category": "CodeStream"
 			},
 			{
-				"command": "codestream.signIn",
+				"command": "github-enterprise.signIn",
 				"title": "Sign In...",
 				"category": "CodeStream"
 			},
 			{
-				"command": "codestream.signOut",
+				"command": "github-enterprise.signOut",
 				"title": "Sign Out",
 				"category": "CodeStream"
 			},
 			{
-				"command": "codestream.toggle",
+				"command": "github-enterprise.toggle",
 				"title": "Toggle CodeStream",
 				"category": "CodeStream"
 			},
 			{
-				"command": "codestream.startWork",
+				"command": "github-enterprise.startWork",
 				"title": "Start Work",
 				"category": "CodeStream"
 			},
 			{
-				"command": "codestream.newComment",
+				"command": "github-enterprise.newComment",
 				"title": "Add Comment",
 				"category": "CodeStream"
 			},
 			{
-				"command": "codestream.newIssue",
+				"command": "github-enterprise.newIssue",
 				"title": "Create Issue",
 				"category": "CodeStream"
 			},
 			{
-				"command": "codestream.newReview",
+				"command": "github-enterprise.newReview",
 				"title": "Request Feedback",
 				"category": "CodeStream"
 			},
 			{
-				"command": "codestream.newPermalink",
+				"command": "github-enterprise.newPermalink",
 				"title": "Get Permalink",
 				"category": "CodeStream"
 			},
 			{
-				"command": "codestream.copyPermalink",
+				"command": "github-enterprise.copyPermalink",
 				"title": "Copy Permalink to Clipboard",
 				"category": "CodeStream"
 			},
 			{
-				"command": "codestream.newPullRequest",
+				"command": "github-enterprise.newPullRequest",
 				"title": "New Pull Request",
 				"category": "CodeStream",
 				"icon": {
@@ -263,7 +263,7 @@
 				}
 			},
 			{
-				"command": "codestream.scmNewReview",
+				"command": "github-enterprise.scmNewReview",
 				"title": "Request Feedback",
 				"icon": {
 					"light": "assets/images/light/review.svg",
@@ -271,7 +271,7 @@
 				}
 			},
 			{
-				"command": "codestream.scmNewComment",
+				"command": "github-enterprise.scmNewComment",
 				"title": "New Comment",
 				"icon": {
 					"light": "assets/images/light/comment.svg",
@@ -279,7 +279,7 @@
 				}
 			},
 			{
-				"command": "codestream.scmNewIssue",
+				"command": "github-enterprise.scmNewIssue",
 				"title": "New Issue",
 				"icon": {
 					"light": "assets/images/light/issue.svg",
@@ -287,7 +287,7 @@
 				}
 			},
 			{
-				"command": "codestream.scmNewPullRequest",
+				"command": "github-enterprise.scmNewPullRequest",
 				"title": "New Pull Request",
 				"icon": {
 					"light": "assets/images/light/pull-request.svg",
@@ -297,7 +297,7 @@
 		],
 		"keybindings": [
 			{
-				"command": "codestream.toggle",
+				"command": "github-enterprise.toggle",
 				"args": {
 					"source": "Shortcut"
 				},
@@ -306,7 +306,7 @@
 				"when": "codestream:status == signedIn"
 			},
 			{
-				"command": "codestream.toggle",
+				"command": "github-enterprise.toggle",
 				"args": {
 					"source": "Shortcut"
 				},
@@ -315,7 +315,7 @@
 				"when": "codestream:status == signedIn"
 			},
 			{
-				"command": "codestream.startWork",
+				"command": "github-enterprise.startWork",
 				"args": {
 					"source": "Shortcut"
 				},
@@ -324,7 +324,7 @@
 				"when": "codestream:status == signedIn"
 			},
 			{
-				"command": "codestream.newComment",
+				"command": "github-enterprise.newComment",
 				"args": {
 					"source": "Shortcut"
 				},
@@ -333,7 +333,7 @@
 				"when": "codestream:status == signedIn"
 			},
 			{
-				"command": "codestream.newComment",
+				"command": "github-enterprise.newComment",
 				"args": {
 					"source": "Shortcut"
 				},
@@ -342,7 +342,7 @@
 				"when": "codestream:status == signedIn"
 			},
 			{
-				"command": "codestream.newIssue",
+				"command": "github-enterprise.newIssue",
 				"args": {
 					"source": "Shortcut"
 				},
@@ -351,7 +351,7 @@
 				"when": "codestream:status == signedIn"
 			},
 			{
-				"command": "codestream.newIssue",
+				"command": "github-enterprise.newIssue",
 				"args": {
 					"source": "Shortcut"
 				},
@@ -360,7 +360,7 @@
 				"when": "codestream:status == signedIn"
 			},
 			{
-				"command": "codestream.newReview",
+				"command": "github-enterprise.newReview",
 				"args": {
 					"source": "Shortcut"
 				},
@@ -369,7 +369,7 @@
 				"when": "codestream:status == signedIn"
 			},
 			{
-				"command": "codestream.newReview",
+				"command": "github-enterprise.newReview",
 				"args": {
 					"source": "Shortcut"
 				},
@@ -378,7 +378,7 @@
 				"when": "codestream:status == signedIn"
 			},
 			{
-				"command": "codestream.newPullRequest",
+				"command": "github-enterprise.newPullRequest",
 				"args": {
 					"source": "Shortcut"
 				},
@@ -387,7 +387,7 @@
 				"when": "codestream:status == signedIn"
 			},
 			{
-				"command": "codestream.newPullRequest",
+				"command": "github-enterprise.newPullRequest",
 				"args": {
 					"source": "Shortcut"
 				},
@@ -396,7 +396,7 @@
 				"when": "codestream:status == signedIn"
 			},
 			{
-				"command": "codestream.newPullRequest",
+				"command": "github-enterprise.newPullRequest",
 				"args": {
 					"source": "Shortcut"
 				},
@@ -405,7 +405,7 @@
 				"when": "codestream:status == signedIn"
 			},
 			{
-				"command": "codestream.newPullRequest",
+				"command": "github-enterprise.newPullRequest",
 				"args": {
 					"source": "Shortcut"
 				},
@@ -414,7 +414,7 @@
 				"when": "codestream:status == signedIn"
 			},
 			{
-				"command": "codestream.showNextChangedFile",
+				"command": "github-enterprise.showNextChangedFile",
 				"args": {
 					"source": "Shortcut"
 				},
@@ -423,7 +423,7 @@
 				"when": "codestream:status == signedIn"
 			},
 			{
-				"command": "codestream.showPreviousChangedFile",
+				"command": "github-enterprise.showPreviousChangedFile",
 				"args": {
 					"source": "Shortcut"
 				},
@@ -432,7 +432,7 @@
 				"when": "codestream:status == signedIn"
 			},
 			{
-				"command": "codestream.newPermalink",
+				"command": "github-enterprise.newPermalink",
 				"args": {
 					"source": "Shortcut"
 				},
@@ -441,7 +441,7 @@
 				"when": "codestream:status == signedIn"
 			},
 			{
-				"command": "codestream.newPermalink",
+				"command": "github-enterprise.newPermalink",
 				"args": {
 					"source": "Shortcut"
 				},
@@ -450,7 +450,7 @@
 				"when": "codestream:status == signedIn"
 			},
 			{
-				"command": "codestream.copyPermalink",
+				"command": "github-enterprise.copyPermalink",
 				"args": {
 					"source": "Shortcut"
 				},
@@ -462,93 +462,93 @@
 		"menus": {
 			"commandPalette": [
 				{
-					"command": "codestream.goOffline",
+					"command": "github-enterprise.goOffline",
 					"when": "codestream:status != signedOut"
 				},
 				{
-					"command": "codestream.signIn",
+					"command": "github-enterprise.signIn",
 					"when": "codestream:status != signedIn && codestream:status != signingIn"
 				},
 				{
-					"command": "codestream.signOut",
+					"command": "github-enterprise.signOut",
 					"when": "codestream:status == signedIn"
 				},
 				{
-					"command": "codestream.toggle",
+					"command": "github-enterprise.toggle",
 					"when": "codestream:status == signedIn"
 				},
 				{
-					"command": "codestream.startWork",
+					"command": "github-enterprise.startWork",
 					"when": "codestream:status == signedIn"
 				},
 				{
-					"command": "codestream.newComment",
+					"command": "github-enterprise.newComment",
 					"when": "codestream:status == signedIn"
 				},
 				{
-					"command": "codestream.newIssue",
+					"command": "github-enterprise.newIssue",
 					"when": "codestream:status == signedIn"
 				},
 				{
-					"command": "codestream.newReview",
+					"command": "github-enterprise.newReview",
 					"when": "codestream:status == signedIn"
 				},
 				{
-					"command": "codestream.showPreviousChangedFile",
+					"command": "github-enterprise.showPreviousChangedFile",
 					"when": "codestream:status == signedIn"
 				},
 				{
-					"command": "codestream.showNextChangedFile",
+					"command": "github-enterprise.showNextChangedFile",
 					"when": "codestream:status == signedIn"
 				},
 				{
-					"command": "codestream.newPermalink",
+					"command": "github-enterprise.newPermalink",
 					"when": "codestream:status == signedIn"
 				},
 				{
-					"command": "codestream.copyPermalink",
+					"command": "github-enterprise.copyPermalink",
 					"when": "codestream:status == signedIn"
 				},
 				{
-					"command": "codestream.newPullRequest",
+					"command": "github-enterprise.newPullRequest",
 					"when": "codestream:status == signedIn"
 				}
 			],
 			"editor/context": [
 				{
-					"command": "codestream.newComment",
+					"command": "github-enterprise.newComment",
 					"when": "codestream:status == signedIn",
 					"group": "9_zcodestream@1"
 				},
 				{
-					"command": "codestream.newIssue",
+					"command": "github-enterprise.newIssue",
 					"when": "codestream:status == signedIn && resourceScheme == file",
 					"group": "9_zcodestream@2"
 				},
 				{
-					"command": "codestream.newPermalink",
+					"command": "github-enterprise.newPermalink",
 					"when": "codestream:status == signedIn && resourceScheme == file",
 					"group": "9_zcodestream@4"
 				}
 			],
 			"view/title": [
 				{
-					"command": "codestream.scmNewPullRequest",
+					"command": "github-enterprise.scmNewPullRequest",
 					"when": "view == scmTreeDataProvider && codestream:status == signedIn",
 					"group": "navigation"
 				},
 				{
-					"command": "codestream.scmNewReview",
+					"command": "github-enterprise.scmNewReview",
 					"when": "view == scmTreeDataProvider && codestream:status == signedIn",
 					"group": "navigation"
 				},
 				{
-					"command": "codestream.scmNewComment",
+					"command": "github-enterprise.scmNewComment",
 					"when": "view == scmTreeDataProvider && codestream:status == signedIn",
 					"group": "navigation"
 				},
 				{
-					"command": "codestream.scmNewIssue",
+					"command": "github-enterprise.scmNewIssue",
 					"when": "view == scmTreeDataProvider && codestream:status == signedIn",
 					"group": "navigation"
 				}

@@ -1,6 +1,6 @@
 "use strict";
 
-export const extensionId = "codestream";
+export const extensionId = "github-enterprise";
 export const extensionOutputChannelName = "CodeStream";
 export const extensionQualifiedId = `CodeStream.${extensionId}`;
 
@@ -24,6 +24,6 @@ export enum BuiltInCommands {
 	RevealLine = "revealLine",
 	ReloadWindow = "workbench.action.reloadWindow",
 	SetContext = "setContext",
-	ShowCodeStream = "workbench.view.extension.codestream",
+	ShowCodeStream = "workbench.view.extension.github-enterprise",
 	ShowReferences = "editor.action.showReferences"
 }

@@ -147,7 +147,7 @@ export class StatusBarController implements Disposable {
 				// }
 
 				this._statusBarItem.text = ` $(comment-discussion) ${env}${label} `;
-				this._statusBarItem.command = "codestream.toggle";
+				this._statusBarItem.command = "github-enterprise.toggle";
 				this._statusBarItem.tooltip = tooltip;
 				break;
 		}

@@ -8,7 +8,7 @@
 			"runtimeExecutable": "${execPath}",
 			"args": ["--extensionDevelopmentPath=${workspaceFolder}"],
 			"env": {
-				"VSCODE_DEBUGGING_EXTENSION": "codestream",
+				"VSCODE_DEBUGGING_EXTENSION": "github-enterprise",
 				"CODESTREAM_AGENT_BREAK_ON_START": "false"
 			},
 			"cwd": "${workspaceFolder}",
@@ -24,7 +24,7 @@
 			"runtimeExecutable": "${execPath}",
 			"args": ["--extensionDevelopmentPath=${workspaceFolder}"],
 			"env": {
-				"VSCODE_DEBUGGING_EXTENSION": "codestream",
+				"VSCODE_DEBUGGING_EXTENSION": "github-enterprise",
 				"CODESTREAM_AGENT_BREAK_ON_START": "true"
 			},
 			"cwd": "${workspaceFolder}",
@@ -40,7 +40,7 @@
 			"runtimeExecutable": "${execPath}",
 			"args": ["--extensionDevelopmentPath=${workspaceFolder}"],
 			"env": {
-				"VSCODE_DEBUGGING_EXTENSION": "codestream"
+				"VSCODE_DEBUGGING_EXTENSION": "github-enterprise"
 			},
 			"cwd": "${workspaceFolder}",
 			"outFiles": ["${workspaceFolder}/dist/**/*.js"],
@@ -56,7 +56,7 @@
 			"runtimeExecutable": "${execPath}",
 			"args": ["--extensionDevelopmentPath=${workspaceFolder}"],
 			"env": {
-				"VSCODE_DEBUGGING_EXTENSION": "codestream"
+				"VSCODE_DEBUGGING_EXTENSION": "github-enterprise"
 			},
 			"cwd": "${workspaceFolder}",
 			"outFiles": ["${workspaceFolder}/dist/**/*.js"],

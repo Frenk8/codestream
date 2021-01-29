@@ -49,7 +49,7 @@ export async function activate(context: ExtensionContext) {
 	Logger.configure(context, configuration.get<TraceLevel>(configuration.name("traceLevel").value));
 
 	let info = await FileSystem.loadJsonFromFile<BuildInfoMetadata>(
-		context.asAbsolutePath(`codestream-${extensionVersion}.info`)
+		context.asAbsolutePath(`github-enterprise-${extensionVersion}.info`)
 	);
 	if (info === undefined) {
 		info = { buildNumber: "", assetEnvironment: "dev" };
@@ -117,7 +117,7 @@ export async function activate(context: ExtensionContext) {
 	);
 
 	const scmTreeDataProvider = new ScmTreeDataProvider();
-	window.registerTreeDataProvider("scmTreeDataProvider", scmTreeDataProvider);
+	window.registerTreeDataProvider("github-enterprise.scmTreeDataProvider", scmTreeDataProvider);
 
 	context.subscriptions.push(scmTreeDataProvider);
 
