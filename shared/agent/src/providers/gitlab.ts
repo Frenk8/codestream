@@ -1488,7 +1488,19 @@ export class GitLabProvider extends ThirdPartyIssueProviderBase<CSGitLabProvider
 		);
 		this.toAuthorAbsolutePath(response.createNote.note.author);
 		return this.handleResponse(request.pullRequestId, {
-			directives: [{ type: "addReply", data: response.createNote.note }]
+			directives: [
+				{
+					type: "updatePullRequest",
+					data: {
+						updatedAt: Dates.toUtcIsoNow()
+					}
+				},
+				{
+					type: "updateReviewCommentsCount",
+					data: 1
+				},
+				{ type: "addReply", data: response.createNote.note }
+			]
 		});
 	}
 
@@ -1525,13 +1537,27 @@ export class GitLabProvider extends ThirdPartyIssueProviderBase<CSGitLabProvider
 			if (node) {
 				this.ensureAvatarAbsolutePathRecurse(node);
 				return this.handleResponse(request.pullRequestId, {
-					directives: [{ type: "addNode", data: node }]
+					directives: [
+						{
+							type: "updatePullRequest",
+							data: {
+								updatedAt: Dates.toUtcIsoNow()
+							}
+						},
+						{ type: "addNode", data: node }
+					]
 				});
 			} else {
 				// if for some reason the id can't be found, the client can de-dupe
 				this.ensureAvatarAbsolutePathRecurse(response?.project?.mergeRequest?.discussions || {});
 				return this.handleResponse(request.pullRequestId, {
 					directives: [
+						{
+							type: "updatePullRequest",
+							data: {
+								updatedAt: Dates.toUtcIsoNow()
+							}
+						},
 						{ type: "addNodes", data: response?.project?.mergeRequest?.discussions.nodes || [] }
 					]
 				});
@@ -1628,6 +1654,10 @@ export class GitLabProvider extends ThirdPartyIssueProviderBase<CSGitLabProvider
 				data: {
 					updatedAt: Dates.toUtcIsoNow()
 				}
+			},
+			{
+				type: "updateReviewCommentsCount",
+				data: 1
 			}
 		];
 		const pendingReview = await this.gitLabReviewStore.get(new GitLabId(projectFullPath, iid));
@@ -1703,7 +1733,16 @@ export class GitLabProvider extends ThirdPartyIssueProviderBase<CSGitLabProvider
 			});
 		}
 
-		return true;
+		return this.handleResponse(request.pullRequestId, {
+			directives: [
+				{
+					type: "updatePullRequest",
+					data: {
+						updatedAt: Dates.toUtcIsoNow()
+					}
+				}
+			]
+		});
 	}
 
 	@log()
@@ -1724,6 +1763,7 @@ export class GitLabProvider extends ThirdPartyIssueProviderBase<CSGitLabProvider
 				{
 					type: "updatePullRequest",
 					data: {
+						updatedAt: Dates.toUtcIsoNow(),
 						subscribed: data.body.subscribed
 					}
 				}
@@ -1746,6 +1786,12 @@ export class GitLabProvider extends ThirdPartyIssueProviderBase<CSGitLabProvider
 
 		return this.handleResponse(request.pullRequestId, {
 			directives: [
+				{
+					type: "updatePullRequest",
+					data: {
+						updatedAt: Dates.toUtcIsoNow()
+					}
+				},
 				{
 					type: "addNodes",
 					data: await this.getLastDiscussions(projectFullPath, iid)
@@ -1791,6 +1837,7 @@ export class GitLabProvider extends ThirdPartyIssueProviderBase<CSGitLabProvider
 					{
 						type: "updatePullRequest",
 						data: {
+							updatedAt: Dates.toUtcIsoNow(),
 							assignees: {
 								nodes: body.assignees.map((assignee: any) => {
 									return {
@@ -1825,6 +1872,7 @@ export class GitLabProvider extends ThirdPartyIssueProviderBase<CSGitLabProvider
 				{
 					type: "updatePullRequest",
 					data: {
+						updatedAt: Dates.toUtcIsoNow(),
 						discussionLocked: data.body.discussion_locked
 					}
 				}
@@ -1845,6 +1893,7 @@ export class GitLabProvider extends ThirdPartyIssueProviderBase<CSGitLabProvider
 				{
 					type: "updatePullRequest",
 					data: {
+						updatedAt: Dates.toUtcIsoNow(),
 						discussionLocked: data.body.discussion_locked
 					}
 				}
@@ -1919,6 +1968,7 @@ export class GitLabProvider extends ThirdPartyIssueProviderBase<CSGitLabProvider
 					{
 						type: "updatePullRequest",
 						data: {
+							updatedAt: Dates.toUtcIsoNow(),
 							title: body.title,
 							workInProgress: body.work_in_progress,
 							description: body.description,
@@ -1981,6 +2031,7 @@ export class GitLabProvider extends ThirdPartyIssueProviderBase<CSGitLabProvider
 				{
 					type: "updatePullRequest",
 					data: {
+						updatedAt: Dates.toUtcIsoNow(),
 						currentUserTodos: {
 							nodes: [data.body]
 						}
@@ -2001,6 +2052,7 @@ export class GitLabProvider extends ThirdPartyIssueProviderBase<CSGitLabProvider
 				{
 					type: "updatePullRequest",
 					data: {
+						updatedAt: Dates.toUtcIsoNow(),
 						currentUserTodos: {
 							nodes: [data.body]
 						}
@@ -2131,6 +2183,12 @@ export class GitLabProvider extends ThirdPartyIssueProviderBase<CSGitLabProvider
 		return this.handleResponse(request.pullRequestId, {
 			directives: [
 				{
+					type: "updatePullRequest",
+					data: {
+						updatedAt: Dates.toUtcIsoNow()
+					}
+				},
+				{
 					type: "updateNode",
 					data: response.discussionToggleResolve.discussion
 				}
@@ -2144,6 +2202,7 @@ export class GitLabProvider extends ThirdPartyIssueProviderBase<CSGitLabProvider
 		type: string;
 		isPending: boolean;
 		pullRequestId: string;
+		parentId?: string;
 	}): Promise<Directives | undefined> {
 		const noteId = request.id;
 		const { id, iid, projectFullPath } = this.parseId(request.pullRequestId);
@@ -2169,13 +2228,24 @@ export class GitLabProvider extends ThirdPartyIssueProviderBase<CSGitLabProvider
 		const directives: Directives = {
 			directives: [
 				{
+					type: "updatePullRequest",
+					data: {
+						updatedAt: Dates.toUtcIsoNow()
+					}
+				},
+				{
 					type: "removeNode",
 					data: {
 						id: request.id
 					}
+				},
+				{
+					type: "updateReviewCommentsCount",
+					data: -1
 				}
 			]
 		};
+
 		this.updateCache(request.pullRequestId, directives);
 		this.session.agent.sendNotification(DidChangePullRequestCommentsNotificationType, {
 			pullRequestId: id,
@@ -2401,6 +2471,7 @@ export class GitLabProvider extends ThirdPartyIssueProviderBase<CSGitLabProvider
 					{
 						type: "updatePullRequest",
 						data: {
+							updatedAt: Dates.toUtcIsoNow(),
 							milestone: response.body.milestone
 						}
 					}
@@ -2443,6 +2514,7 @@ export class GitLabProvider extends ThirdPartyIssueProviderBase<CSGitLabProvider
 					{
 						type: "updatePullRequest",
 						data: {
+							updatedAt: Dates.toUtcIsoNow(),
 							workInProgress: response.mergeRequestSetWip.mergeRequest.workInProgress,
 							title: response.mergeRequestSetWip.mergeRequest.title
 						}
@@ -2490,6 +2562,10 @@ export class GitLabProvider extends ThirdPartyIssueProviderBase<CSGitLabProvider
 			return this.handleResponse(request.pullRequestId, {
 				directives: [
 					{
+						type: "updatePullRequest",
+						data: { updatedAt: Dates.toUtcIsoNow() }
+					},
+					{
 						type: "setLabels",
 						data: response.mergeRequestSetLabels.mergeRequest.labels
 					},
@@ -2530,6 +2606,10 @@ export class GitLabProvider extends ThirdPartyIssueProviderBase<CSGitLabProvider
 				return this.handleResponse(request.pullRequestId, {
 					directives: [
 						{
+							type: "updatePullRequest",
+							data: { updatedAt: Dates.toUtcIsoNow() }
+						},
+						{
 							// FIXME -- if the subjectId is a note, update the note
 							type: "addReaction",
 							data: response.body
@@ -2547,6 +2627,10 @@ export class GitLabProvider extends ThirdPartyIssueProviderBase<CSGitLabProvider
 					const currentUser = await this.getCurrentUser();
 					return this.handleResponse(request.pullRequestId, {
 						directives: [
+							{
+								type: "updatePullRequest",
+								data: { updatedAt: Dates.toUtcIsoNow() }
+							},
 							{
 								// FIXME -- if the subjectId is a note, update the note
 								type: "removeReaction",
@@ -2647,6 +2731,7 @@ export class GitLabProvider extends ThirdPartyIssueProviderBase<CSGitLabProvider
 					{
 						type: "updatePullRequest",
 						data: {
+							updatedAt: Dates.toUtcIsoNow(),
 							mergeWhenPipelineSucceeds: false
 						}
 					}
@@ -2729,13 +2814,12 @@ export class GitLabProvider extends ThirdPartyIssueProviderBase<CSGitLabProvider
 		startLine: number;
 		position?: number;
 		metadata?: any;
-	}) {
-		const result = await this.createCommitComment({
+	}): Promise<Directives> {
+		return this.createCommitComment({
 			...request,
 			path: request.filePath,
 			sha: request.sha || request.rightSha
 		});
-		return result;
 	}
 
 	@log()
@@ -2791,6 +2875,16 @@ export class GitLabProvider extends ThirdPartyIssueProviderBase<CSGitLabProvider
 			);
 			const directives: Directives = {
 				directives: [
+					{
+						type: "updatePullRequest",
+						data: {
+							updatedAt: Dates.toUtcIsoNow()
+						}
+					},
+					{
+						type: "updateReviewCommentsCount",
+						data: 1
+					},
 					{
 						type: "addNodes",
 						data: await this.getLastDiscussions(projectFullPath, iid, 2)
@@ -2873,6 +2967,12 @@ export class GitLabProvider extends ThirdPartyIssueProviderBase<CSGitLabProvider
 		const lastDiscussions = await this.getLastDiscussions(projectFullPath, iid);
 		return this.handleResponse(request.pullRequestId, {
 			directives: [
+				{
+					type: "updatePullRequest",
+					data: {
+						updatedAt: Dates.toUtcIsoNow()
+					}
+				},
 				{
 					type: "addNodes",
 					data: lastDiscussions
@@ -3008,6 +3108,12 @@ export class GitLabProvider extends ThirdPartyIssueProviderBase<CSGitLabProvider
 
 		return this.handleResponse(request.pullRequestId, {
 			directives: [
+				{
+					type: "updatePullRequest",
+					data: {
+						updatedAt: Dates.toUtcIsoNow()
+					}
+				},
 				{
 					type: "updateDiscussionNote",
 					data: response.updateNote.note
@@ -3236,7 +3342,202 @@ export class GitLabProvider extends ThirdPartyIssueProviderBase<CSGitLabProvider
 		return directives;
 	}
 
-	private updateCache(pullRequestId: string, directives: Directives) {}
+	private updateCache(pullRequestId: string, directives: Directives) {
+		const prWrapper = this._pullRequestCache.get(pullRequestId);
+		if (!prWrapper) {
+			return;
+		}
+		const pr = prWrapper.project?.mergeRequest;
+		if (!pr) {
+			return;
+		}
+		for (const directive of directives.directives) {
+			if (directive.type === "addApprovedBy") {
+				if (pr.approvedBy) {
+					for (const d of directive.data) {
+						if (!pr.approvedBy.nodes.find(_ => _.login === d.login)) {
+							pr.approvedBy.nodes.push(d);
+						}
+					}
+				}
+			} else if (directive.type === "removeApprovedBy") {
+				if (pr.approvedBy) {
+					pr.approvedBy.nodes.length = 0;
+					for (const d of directive.data) {
+						pr.approvedBy.nodes.push(d);
+					}
+				}
+			} else if (directive.type === "addNode") {
+				const node = pr.discussions.nodes.find(_ => _.id === directive.data.id);
+				if (!node) {
+					pr.discussions.nodes.push(directive.data);
+				}
+			} else if (directive.type === "addNodes") {
+				// if (!directive.data.id) continue;
+				for (const d of directive.data) {
+					if (!d.id) {
+						console.warn("missing id");
+						continue;
+					}
+					const node = pr.discussions.nodes.find(_ => _.id === d.id);
+					if (!node) {
+						pr.discussions.nodes.push(d);
+					}
+				}
+			} else if (directive.type === "addReaction") {
+				const reaction = pr.reactionGroups.find(_ => _.content === directive.data.name);
+				if (reaction) {
+					reaction.data.push(directive.data);
+				} else {
+					pr.reactionGroups.push({ content: directive.data.name, data: [directive.data] });
+				}
+			} else if (directive.type === "addReply") {
+				const discussionNode = pr.discussions.nodes.find(
+					(_: DiscussionNode) => _.id === directive.data.discussion.id
+				);
+				if (discussionNode) {
+					const firstNode = discussionNode?.notes?.nodes[0];
+					if (firstNode) {
+						const replies = firstNode.replies;
+						if (firstNode.replies == null) {
+							firstNode.replies = [directive.data];
+						} else if (!firstNode.replies.find(_ => _.id === directive.data.id)) {
+							firstNode.replies.push(directive.data);
+						}
+					} else {
+						console.warn("Could not find node", discussionNode);
+					}
+				}
+			} else if (directive.type === "removeNode") {
+				if (!directive.data.id) continue;
+
+				let nodeIndex = 0;
+				let nodeRemoveIndex = -1;
+				let pseudoGoto = false;
+				for (const node of pr.discussions.nodes) {
+					if (node.id === directive.data.id) {
+						// is an outer node
+						nodeRemoveIndex = nodeIndex;
+						break;
+					}
+					if (node.notes && node.notes.nodes.length) {
+						let noteIndex = 0;
+						for (const note of node.notes.nodes) {
+							if (note.id === directive.data.id) {
+								// if this is the first note, nuke all the replies too
+								// by removing the parent node
+								if (noteIndex === 0) {
+									nodeRemoveIndex = nodeIndex;
+									pseudoGoto = true;
+									break;
+								} else {
+									node.notes.nodes.splice(noteIndex, 1);
+									pseudoGoto = true;
+									break;
+								}
+							}
+							noteIndex++;
+						}
+					}
+
+					if (pseudoGoto) {
+						break;
+					}
+					nodeIndex++;
+				}
+				if (nodeRemoveIndex > -1) {
+					pr.discussions.nodes.splice(nodeRemoveIndex, 1);
+				}
+			} else if (directive.type === "updateDiscussionNote") {
+				const discussionNode = pr.discussions.nodes.find(
+					(_: DiscussionNode) => _.id === directive.data.discussion.id
+				);
+				if (discussionNode) {
+					const note = discussionNode?.notes?.nodes.find(_ => _.id === directive.data.id);
+					if (note) {
+						const keys = Object.keys(directive.data).filter(_ => _ !== "discussion" && _ !== "id");
+						for (const k of keys) {
+							(note as any)[k] = directive.data[k];
+						}
+					}
+					// typescript is killing me here...
+					else if (
+						discussionNode.notes?.nodes &&
+						discussionNode.notes.nodes.length > 0 &&
+						discussionNode.notes.nodes[0] &&
+						discussionNode.notes.nodes[0].replies?.length
+					) {
+						const reply = discussionNode!.notes!.nodes![0]?.replies?.find(
+							_ => _.id === directive.data.id
+						);
+						if (reply) {
+							const keys = Object.keys(directive.data).filter(
+								_ => _ !== "discussion" && _ !== "id"
+							);
+							for (const k of keys) {
+								(reply as any)[k] = directive.data[k];
+							}
+						}
+					}
+				}
+			} else if (directive.type === "updateNode") {
+				const node = pr.discussions.nodes.find((_: any) => _.id === directive.data.id);
+				if (node) {
+					for (const key in directive.data) {
+						if (key === "notes") {
+							for (const note of directive.data.notes.nodes) {
+								if (node.notes) {
+									let existingNote = node.notes.nodes.find(_ => _.id === note.id);
+									if (existingNote) {
+										for (const k in note) {
+											(existingNote as any)[k] = note[k];
+										}
+									}
+								}
+							}
+						} else {
+							(node as any)[key] = directive.data[key];
+						}
+					}
+				}
+			} else if (directive.type === "updatePullRequest") {
+				for (const key in directive.data) {
+					if (directive.data[key] && Array.isArray(directive.data[key].nodes)) {
+						// clear out the array, but keep its reference
+						(pr as any)[key].nodes.length = 0;
+						for (const n of directive.data[key].nodes) {
+							(pr as any)[key].nodes.push(n);
+						}
+					} else {
+						(pr as any)[key] = directive.data[key];
+					}
+				}
+			} else if (directive.type === "updateReviewCommentsCount") {
+				pr.userDiscussionsCount = (pr.userDiscussionsCount || 0) + directive.data;
+			} else if (directive.type === "updateReviewers") {
+				if (pr.reviewers && pr.reviewers.nodes) {
+					if (pr.reviewers && !pr.reviewers.nodes) {
+						pr.reviewers.nodes = [];
+					} else {
+						pr.reviewers.nodes.length = 0;
+					}
+					for (const reviewer of directive.data) {
+						pr.reviewers.nodes.push(reviewer);
+					}
+				}
+			} else if (directive.type === "removeReaction") {
+				const group = pr.reactionGroups.find(_ => _.content === directive.data.content);
+				if (group) {
+					group.data = group.data.filter(_ => _.user.login !== directive.data.login);
+					if (group.data.length === 0) {
+						pr.reactionGroups = pr.reactionGroups.filter(_ => _.content !== directive.data.content);
+					}
+				}
+			} else if (directive.type === "setLabels") {
+				pr.labels.nodes = directive.data.nodes;
+			}
+		}
+	}
 }
 
 interface GitLabReview {
