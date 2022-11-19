@@ -627,7 +627,7 @@
 		"fork-ts-checker-webpack-plugin": "3.1.0",
 		"html-loader": "0.5.5",
 		"html-webpack-inline-source-plugin": "0.0.10",
-		"html-webpack-plugin": "3.2.0",
+		"html-webpack-plugin": "5.5.0",
 		"less": "3.9.0",
 		"less-loader": "5.0.0",
 		"mini-css-extract-plugin": "0.8.0",
@@ -641,6 +641,6 @@
 		"vsce": "1.66.0",
 		"webpack": "4.38.0",
 		"webpack-bundle-analyzer": "3.8.0",
-		"webpack-cli": "3.3.6"
+		"webpack-cli": "3.3.12"
 	}
 }
