@@ -102,7 +102,7 @@
         "graphql": "15.5.0",
         "graphql-tag": "2.11.0",
         "https-proxy-agent": "3.0.1",
-        "mocha": "6.2.0",
+        "mocha": "10.2.0",
         "mocha-teamcity-reporter": "3.0.0",
         "pkg": "4.3.8",
         "prettier": "1.19.1",
